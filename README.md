@@ -4,16 +4,6 @@
 
 A portfolio project that turns donor-facing program data into a clear, interactive impact dashboard with a one-click PowerPoint export.
 
-## Live Demo
-
-Add your Vercel URL here after first deploy:
-
-- `https://your-project-name.vercel.app`
-
-One-click deploy:
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/vassiliylakhonin/activity-reporting-for-donors)
-
 ## Why This Project Matters
 
 Donor reporting is often fragmented across spreadsheets, narrative notes, and slide decks. This app demonstrates how I package those outputs into a single product:
@@ -76,13 +66,6 @@ npm run dev
 ```
 
 App starts at `http://localhost:3000`.
-
-### Deploy to Vercel
-
-1. Click the Vercel deploy button above.
-2. Import `vassiliylakhonin/activity-reporting-for-donors`.
-3. Keep defaults (Vercel will use `vercel.json`).
-4. Deploy and copy the generated `.vercel.app` URL into the "Live Demo" section.
 
 ## Quality Checks
 
