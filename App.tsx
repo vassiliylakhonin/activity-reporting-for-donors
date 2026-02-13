@@ -7,8 +7,7 @@ import {
   HeartPulse, 
   Lightbulb,
   Info,
-  Presentation,
-  Download
+  Presentation
 } from 'lucide-react';
 import Dashboard from './components/Dashboard';
 import IndicatorsView from './components/IndicatorsView';
@@ -16,7 +15,6 @@ import StoriesView from './components/StoriesView';
 import PsychologicalSupport from './components/PsychologicalSupport';
 import Recommendations from './components/Recommendations';
 import { SUMMARY_DATA } from './data';
-import { generateReportPPTX } from './services/pptxService';
 
 enum Tab {
   DASHBOARD = 'dashboard',
@@ -33,6 +31,7 @@ const App: React.FC = () => {
   const handleExport = async () => {
     setIsExporting(true);
     try {
+      const { generateReportPPTX } = await import('./services/pptxService');
       await generateReportPPTX();
     } catch (error) {
       console.error("PPTX Generation failed:", error);

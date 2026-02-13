@@ -70,6 +70,7 @@ App starts at `http://localhost:3000`.
 ## Quality Checks
 
 ```bash
+npm test
 npm run typecheck
 npm run build
 ```

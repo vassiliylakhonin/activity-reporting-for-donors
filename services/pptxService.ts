@@ -13,7 +13,6 @@ export const generateReportPPTX = async (): Promise<void> => {
 
   const PRIMARY_COLOR = "4f46e5"; // Indigo 600
   const SECONDARY_COLOR = "1e1b4b"; // Indigo 950
-  const ACCENT_COLOR = "f59e0b"; // Amber
 
   // --- Slide 1: Title Slide ---
   let slide = pptx.addSlide();
@@ -85,19 +84,25 @@ export const generateReportPPTX = async (): Promise<void> => {
   const alex = CASE_STUDIES[0];
   slide = pptx.addSlide();
   slide.addText("IMPACT STORY: TRANSFORMATION", { x: 0.5, y: 0.4, w: "90%", fontSize: 24, color: PRIMARY_COLOR, bold: true });
-  
-  slide.addText(`"${alex.quote}"`, {
-    x: 0.5, y: 1.2, w: "90%", h: 0.8,
-    fontSize: 20, italic: true, color: SECONDARY_COLOR, align: "center"
-  });
 
-  slide.addText(`Case Study: ${alex.name} (${alex.age}y/o)`, { x: 0.5, y: 2.2, fontSize: 16, bold: true });
-  slide.addText(alex.background, { x: 0.5, y: 2.6, w: 4.5, fontSize: 12, color: "666666" });
-  
-  slide.addText("Milestones & Achievements:", { x: 5.5, y: 2.2, fontSize: 14, bold: true });
-  alex.achievements.forEach((ach, idx) => {
-    slide.addText(ach, { x: 5.5, y: 2.6 + (idx * 0.4), w: 4.0, fontSize: 11, bullet: true });
-  });
+  if (alex) {
+    slide.addText(`"${alex.quote}"`, {
+      x: 0.5, y: 1.2, w: "90%", h: 0.8,
+      fontSize: 20, italic: true, color: SECONDARY_COLOR, align: "center"
+    });
+
+    slide.addText(`Case Study: ${alex.name} (${alex.age}y/o)`, { x: 0.5, y: 2.2, fontSize: 16, bold: true });
+    slide.addText(alex.background, { x: 0.5, y: 2.6, w: 4.5, fontSize: 12, color: "666666" });
+
+    slide.addText("Milestones & Achievements:", { x: 5.5, y: 2.2, fontSize: 14, bold: true });
+    alex.achievements.forEach((ach, idx) => {
+      slide.addText(ach, { x: 5.5, y: 2.6 + (idx * 0.4), w: 4.0, fontSize: 11, bullet: true });
+    });
+  } else {
+    slide.addText("No impact story data available for this reporting period.", {
+      x: 0.5, y: 2.2, w: "90%", h: 0.8, fontSize: 14, color: "666666"
+    });
+  }
 
   // --- Slide 5: Psychosocial Support (PSS) ---
   slide = pptx.addSlide();
@@ -120,13 +125,22 @@ export const generateReportPPTX = async (): Promise<void> => {
   slide = pptx.addSlide();
   slide.addText("STRATEGIC RECOMMENDATIONS", { x: 0.5, y: 0.4, w: "90%", fontSize: 24, color: PRIMARY_COLOR, bold: true });
   
-  const recs = LESSONS[1].points; // Future Recommendations
-  recs.forEach((rec, idx) => {
-    slide.addText(rec, {
-      x: 0.8, y: 1.2 + (idx * 0.6), w: 8.5,
-      fontSize: 14, color: "444444", bullet: true
+  const recs = LESSONS.find((item) => item.category === "Future Recommendations")?.points
+    ?? LESSONS[0]?.points
+    ?? [];
+
+  if (recs.length === 0) {
+    slide.addText("No recommendations available for this reporting period.", {
+      x: 0.8, y: 1.2, w: 8.5, fontSize: 14, color: "666666"
     });
-  });
+  } else {
+    recs.forEach((rec, idx) => {
+      slide.addText(rec, {
+        x: 0.8, y: 1.2 + (idx * 0.6), w: 8.5,
+        fontSize: 14, color: "444444", bullet: true
+      });
+    });
+  }
 
   // --- Slide 7: Closing Slide ---
   slide = pptx.addSlide();

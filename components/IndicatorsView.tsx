@@ -1,13 +1,14 @@
 
 import React from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, Legend } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { INDICATORS } from '../data';
 import { AlertCircle } from 'lucide-react';
+import { calculatePerformancePercent, getIndicatorTarget } from '../utils/indicatorMetrics';
 
 const IndicatorsView: React.FC = () => {
   const chartData = INDICATORS.map(ind => ({
     name: ind.name,
-    Target: typeof ind.target === 'number' ? ind.target : 0,
+    Target: getIndicatorTarget(ind.target, ind.achieved),
     Achieved: ind.achieved,
     unit: ind.unit
   }));
@@ -47,25 +48,28 @@ const IndicatorsView: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {INDICATORS.map((indicator) => (
-          <div key={indicator.id} className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 flex flex-col h-full">
-            <div className="flex items-center justify-between mb-4">
-              <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">ID: {indicator.id}</span>
-              <div className="flex gap-2">
-                <span className="text-xs font-semibold bg-gray-100 text-gray-600 px-2 py-1 rounded-md">Goal: {indicator.target}</span>
-                <span className="text-xs font-bold bg-indigo-50 text-indigo-700 px-2 py-1 rounded-md">Hit: {indicator.achieved}</span>
+        {INDICATORS.map((indicator) => {
+          const performance = calculatePerformancePercent(indicator.achieved, indicator.target);
+          return (
+            <div key={indicator.id} className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 flex flex-col h-full">
+              <div className="flex items-center justify-between mb-4">
+                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">ID: {indicator.id}</span>
+                <div className="flex gap-2">
+                  <span className="text-xs font-semibold bg-gray-100 text-gray-600 px-2 py-1 rounded-md">Goal: {indicator.target}</span>
+                  <span className="text-xs font-bold bg-indigo-50 text-indigo-700 px-2 py-1 rounded-md">Hit: {indicator.achieved}</span>
+                </div>
+              </div>
+              <h3 className="text-lg font-bold text-gray-900 mb-2">{indicator.name}</h3>
+              <p className="text-gray-600 text-sm leading-relaxed mb-4 flex-grow">
+                {indicator.analysis}
+              </p>
+              <div className="pt-4 border-t border-gray-50 flex items-center gap-2 text-indigo-600 font-bold text-sm">
+                <AlertCircle className="w-4 h-4" />
+                Performance: {performance === null ? 'N/A' : `${performance}%`}
               </div>
             </div>
-            <h3 className="text-lg font-bold text-gray-900 mb-2">{indicator.name}</h3>
-            <p className="text-gray-600 text-sm leading-relaxed mb-4 flex-grow">
-              {indicator.analysis}
-            </p>
-            <div className="pt-4 border-t border-gray-50 flex items-center gap-2 text-indigo-600 font-bold text-sm">
-              <AlertCircle className="w-4 h-4" />
-              Performance: {Math.round((indicator.achieved / (typeof indicator.target === 'number' ? indicator.target : indicator.achieved)) * 100)}%
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
