@@ -4,6 +4,10 @@
 
 A portfolio project that turns donor-facing program data into a clear, interactive impact dashboard with a one-click PowerPoint export.
 
+## Live Demo
+
+- https://moonlit-bavarois-971054.netlify.app
+
 ## Why This Project Matters
 
 Donor reporting is often fragmented across spreadsheets, narrative notes, and slide decks. This app demonstrates how I package those outputs into a single product:
