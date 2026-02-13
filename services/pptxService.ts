@@ -2,7 +2,7 @@
 import pptxgen from "pptxgenjs";
 import { SUMMARY_DATA, INDICATORS, CASE_STUDIES, PSS_CASES, LESSONS } from '../data';
 
-export const generateReportPPTX = async () => {
+export const generateReportPPTX = async (): Promise<void> => {
   const pptx = new pptxgen();
   
   // Set global properties
@@ -56,18 +56,20 @@ export const generateReportPPTX = async () => {
   slide = pptx.addSlide();
   slide.addText("PERFORMANCE INDICATORS", { x: 0.5, y: 0.4, w: "90%", fontSize: 24, color: PRIMARY_COLOR, bold: true });
   
-  const indicatorRows = [
-    [{ text: "Indicator", options: { bold: true, fill: "F1F1F1" } }, 
-     { text: "Target", options: { bold: true, fill: "F1F1F1" } }, 
-     { text: "Achieved", options: { bold: true, fill: "F1F1F1" } }]
+  const indicatorRows: pptxgen.TableRow[] = [
+    [
+      { text: "Indicator", options: { bold: true, fill: { color: "F1F1F1" } } },
+      { text: "Target", options: { bold: true, fill: { color: "F1F1F1" } } },
+      { text: "Achieved", options: { bold: true, fill: { color: "F1F1F1" } } }
+    ]
   ];
 
   INDICATORS.forEach(ind => {
     // Providing explicit bold and fill properties to match the type inferred from the header row above
     indicatorRows.push([
-      { text: ind.name, options: { bold: false, fill: "FFFFFF" } },
-      { text: ind.target.toString(), options: { bold: false, fill: "FFFFFF" } },
-      { text: ind.achieved.toString(), options: { bold: false, fill: "FFFFFF" } }
+      { text: ind.name, options: { bold: false, fill: { color: "FFFFFF" } } },
+      { text: ind.target.toString(), options: { bold: false, fill: { color: "FFFFFF" } } },
+      { text: ind.achieved.toString(), options: { bold: false, fill: { color: "FFFFFF" } } }
     ]);
   });
 
@@ -105,11 +107,11 @@ export const generateReportPPTX = async () => {
   
   PSS_CASES.forEach((pss, idx) => {
     slide.addText(`${pss.issue}: ${pss.outcome}`, {
-      x: 0.8, y: 1.8 + (idx * 1.0), w: "8.5",
+      x: 0.8, y: 1.8 + (idx * 1.0), w: 8.5,
       fontSize: 13, color: "333333", bold: true
     });
     slide.addText(`"${pss.quote}"`, {
-      x: 1.0, y: 2.1 + (idx * 1.0), w: "8.0",
+      x: 1.0, y: 2.1 + (idx * 1.0), w: 8.0,
       fontSize: 11, italic: true, color: "666666"
     });
   });
@@ -121,8 +123,8 @@ export const generateReportPPTX = async () => {
   const recs = LESSONS[1].points; // Future Recommendations
   recs.forEach((rec, idx) => {
     slide.addText(rec, {
-      x: 0.8, y: 1.2 + (idx * 0.6), w: "8.5",
-      fontSize: 14, color: "444444", bullet: { type: "check" }
+      x: 0.8, y: 1.2 + (idx * 0.6), w: 8.5,
+      fontSize: 14, color: "444444", bullet: true
     });
   });
 
@@ -137,5 +139,5 @@ export const generateReportPPTX = async () => {
   });
 
   // Save the presentation
-  pptx.writeFile({ fileName: `EYI_Impact_Report_${new Date().getFullYear()}.pptx` });
+  await pptx.writeFile({ fileName: `EYI_Impact_Report_${new Date().getFullYear()}.pptx` });
 };
