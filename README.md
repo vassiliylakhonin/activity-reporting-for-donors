@@ -26,7 +26,7 @@ Donor reporting is often fragmented across spreadsheets, narrative notes, and sl
 - UI: Tailwind utility classes, Lucide icons
 - Charts: Recharts
 - Export: PptxGenJS
-- Tooling: npm
+- Tooling: npm, Vitest
 
 ## Architecture
 
@@ -36,6 +36,7 @@ The app is intentionally split into domain-oriented modules:
 - `components/`: view modules (`Dashboard`, `IndicatorsView`, `StoriesView`, `PsychologicalSupport`, `Recommendations`).
 - `data.ts`: structured reporting data source.
 - `services/pptxService.ts`: slide generation and file export logic.
+- `utils/`: shared indicator metric helpers and tests.
 
 ## Project Structure
 
@@ -43,6 +44,7 @@ The app is intentionally split into domain-oriented modules:
 .
 ├── components/
 ├── services/
+├── utils/
 ├── docs/
 │   └── screenshots/
 ├── data.ts
@@ -92,7 +94,7 @@ Suggested assets:
 
 - Built an end-to-end reporting UI for donor communication workflows.
 - Designed reusable data-driven components for both quantitative and qualitative impact narratives.
-- Implemented production-style verification via TypeScript checks and build validation.
+- Implemented production-style verification via automated tests, TypeScript checks, and build validation.
 - Added export automation to reduce manual slide preparation overhead.
 
 ## Roadmap
@@ -100,7 +102,7 @@ Suggested assets:
 - Add real backend/API data integration.
 - Add i18n for multilingual reporting audiences.
 - Add route-level code splitting to reduce bundle size.
-- Add unit/integration tests (Vitest + React Testing Library).
+- Expand tests with React Testing Library integration coverage and Playwright E2E flows.
 
 ## License
 
